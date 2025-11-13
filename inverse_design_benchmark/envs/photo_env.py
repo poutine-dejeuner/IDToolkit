@@ -13,30 +13,25 @@ class PhotoEnv(EnvBase):
 
     def __init__(self, seed=0, save_model=False, substitute_model_name='', ensemble=False):
         super().__init__("photo", seed, save_model, substitute_model_name, ensemble)
-        # self.target, self.wavelength = load_target()
         self.target = 0.5
-        self.imageh = 101
-        self.imagew = 101
+        self.imshape = (101, 91)
 
     def env_forward(self, param, force_numerical=False):
         self.parameter_space.check(param)
+        h, w = self.imshape
+        param = self.process_param(param)
+        param = self.parameter_space.to_numpy(param).reshape(-1, h, w)
 
         if not force_numerical and self.substitute_model_name:
-            result = self.env_forward_by_models(self.parameter_space.to_numpy(param))
+            result = self.env_forward_by_models(param)
         else:
-            param = self.process_param(param)
-            params = [param["p"], param["ts"], param["tm"]] + \
-                [param[f"r{i}"] for i in range(16)]
-            params = np.array(params)
-            result = simulate(params)
+            result = simulate(param)
         return result
 
     def process_param(self, param):
         new_param = deepcopy(param)
-        r_bound = (resol, param["p"] / 2)
-        for i in range(16):
-            new_param[f"r{i}"] = np.clip(param[f"r{i}"],
-                                         a_min=r_bound[0], a_max=r_bound[1])
+        for k in new_param.keys():
+            new_param[k] = np.clip(new_param[k], 0, 1)
         return new_param
 
     def score(self, value):
@@ -51,23 +46,11 @@ class PhotoEnv(EnvBase):
                      j in range(self.imagew)}
             self._parameter_space = CombineSpace(space_dict=spaces)
         return self._parameter_space
-        #     spaces = {
-        #         "p": UniformSpace(350, 500),
-        #         "ts": UniformSpace(30, 130),
-        #         "tm": UniformSpace(10, 80),
-        #     }
-        #     for i in range(16):
-        #         spaces[f"r{i}"] = UniformSpace(40, 250)
-        #     self._parameter_space = CombineSpace(space_dict=spaces)
-        # return self._parameter_space
     
     @property
     def get_input_dim(self):
         return self.imageh * self.imagew
-        # le nombre de parametres dans parameter_space
-        # return 19
     
     @property
     def get_output_dim(self):
-        # return 500
         return self.imageh * self.imagew

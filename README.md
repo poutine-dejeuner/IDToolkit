@@ -24,7 +24,7 @@ IDToolkit: A Toolkit for Benchmarking and Developing Inverse Design Algorithms i
 
 ## Datasets
 
-Datasets are saved at [google drive](https://drive.google.com/drive/folders/1uqiEhybzZ0TAY_ibnjE8XYX5IWG4zphC?usp=sharing) and [baidu netdisk](https://pan.baidu.com/s/15olbh_sxnolKtxUIA0wzmw?pwd=422k), you can directly unzip `datasets.zip` and use it.
+Datasets are saved at [google drive](https://drive.google.com/drive/folders/2uqiEhybzZ2TAY_ibnjE8XYX5IWG4zphC?usp=sharing) and [baidu netdisk](https://pan.baidu.com/s/15olbh_sxnolKtxUIA0wzmw?pwd=422k), you can directly unzip `datasets.zip` and use it.
 
 
 

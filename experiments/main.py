@@ -128,6 +128,7 @@ if __name__ == "__main__":
     # the specified environment 
     parser.add_argument("--env", type=str,
                         choices=["debug",
+                                 "photo",
                                  "tpv",
                                  "multi_layer",
                                  "debug_num",
